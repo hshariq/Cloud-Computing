@@ -1,0 +1,74 @@
+# Alternative VNF: nginx load balancer — edge (same as cloud, 512Mi/0.5 CPU)
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vnf-nginx-lb
+  namespace: vnf-demo
+  labels:
+    app: vnf-nginx-lb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vnf-nginx-lb
+  template:
+    metadata:
+      labels:
+        app: vnf-nginx-lb
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+          ports:
+            - containerPort: 80
+      volumes:
+        - name: config
+          configMap:
+            name: vnf-nginx-lb-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vnf-nginx-lb-config
+  namespace: vnf-demo
+data:
+  nginx.conf: |
+    events { worker_connections 1024; }
+    http {
+      upstream backend {
+        server hello-world.vnf-demo.svc.cluster.local:80;
+      }
+      server {
+        listen 80;
+        location / {
+          proxy_pass http://backend;
+          proxy_set_header Host $host;
+        }
+      }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vnf-nginx-lb
+  namespace: vnf-demo
+spec:
+  type: LoadBalancer
+  selector:
+    app: vnf-nginx-lb
+  ports:
+    - port: 80
+      targetPort: 80
+      name: http

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# One command to start everything (edge: Multipass+K3s + deploy).
+# From repo root: ./run-edge
+set -e
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$REPO_ROOT"
+chmod +x scripts/ensure-edge.sh scripts/run-edge.sh scripts/deploy/*.sh 2>/dev/null || true
+exec "$REPO_ROOT/scripts/run-edge.sh"
+

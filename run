@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# One command to start everything (cluster + VNF + Hello World).
+# From repo root: ./run
+set -e
+REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
+cd "$REPO_ROOT"
+chmod +x scripts/ensure-cluster.sh scripts/run-cloud.sh scripts/deploy/*.sh 2>/dev/null || true
+exec "$REPO_ROOT/scripts/run-cloud.sh"
+
+
+# 1. The Environment Setup (set -e and REPO_ROOT)
+# #!/usr/bin/env bash: Tells your Mac to use the Bash interpreter to run these instructions.
+
+# set -e: This is a "safety first" command. It tells the script to stop immediately if any single command fails. This prevents the script from trying to deploy your VNF if the Minikube cluster failed to start.
+
+# REPO_ROOT="...": It automatically calculates where your project folder is located. This makes the script "portable," meaning it will work even if you move your folder to a different directory on your Mac.
+
+# 2. Permissions (chmod +x)
+# chmod +x scripts/...: This gives "Execute" permissions to all your sub-scripts. It ensures that your Mac is allowed to run the internal scripts that actually start Minikube and apply your YAML files.
+
+# 3. The Hand-off (exec ...)
+# exec "$REPO_ROOT/scripts/run-cloud.sh": This is the final step. It hands over control to the specific script that manages the Cloud-like setup.

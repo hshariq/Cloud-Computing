@@ -1,0 +1,51 @@
+# Hello World app — used to verify VNF operation (cloud-like: Minikube)
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: vnf-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: vnf-demo
+  labels:
+    app: hello-world
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-world
+  template:
+    metadata:
+      labels:
+        app: hello-world
+    spec:
+      containers:
+        - name: server
+          image: hashicorp/http-echo:latest
+          args:
+            - "-text=Hello from Cloud VNF demo"
+            - "-listen=:5678"
+          ports:
+            - containerPort: 5678
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "50m"
+            limits:
+              memory: "64Mi"
+              cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-world
+  namespace: vnf-demo
+spec:
+  selector:
+    app: hello-world
+  ports:
+    - port: 80
+      targetPort: 5678
+  type: ClusterIP

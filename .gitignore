@@ -1,0 +1,10 @@
+# Results and local data
+results/
+*.log
+*.csv
+
+# OS and editor
+.DS_Store
+.idea/
+*.swp
+*.swo
