@@ -146,3 +146,24 @@ Shared this and the json files with the AI and asked it refine my answer:
 
 Discussion of ResultsThe experimental data reveals a fundamental trade-off between OS-level virtualization (Cloud) and Hardware-level virtualization (Edge). The Cloud-like environment demonstrated high reliability, maintaining a 100% success rate across all requests. Conversely, the Edge-like environment exhibited a "Saturation Paradox": while its mean latency ($3.68$ ms) was significantly lower than the Cloud's ($7.39$ ms), it suffered a failure rate of over $73\%$ under the same worker load.
 
+
+
+
+
+Q1 General information
+Briefly describe your coursework. What have you done? 400 characters with spaces max.
+
+My answer:
+For my courswork I have found myself exploring the realms of infrastructure and shell scripts. A niche that I enjoyed a lot!
+
+I came across Kubernetes clusters for the very first time, and deployed them oncloud and edge like instances. I have also added batch scripts that automate the pipeline of running the deployments and getting them ready, while also testing the load balncer with a gen-traffic script.
+
+Sent it to AI for refinement:
+For this coursework, I explored the intersection of NFV infrastructure and automation. I provisioned Cloud (Minikube) and Edge (K3s) Kubernetes clusters from scratch using shell scripts. I developed an automated pipeline to deploy an Nginx VNF, orchestrated via custom Bash scripts and a Python-based traffic generator to analyze real-world performance trade-offs.
+
+
+I also took help in toruble  shooting fro generater traffice and run expeirmients since I was struggling to set it up
+
+
+
+

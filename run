@@ -8,15 +8,13 @@ chmod +x scripts/ensure-cluster.sh scripts/run-cloud.sh scripts/deploy/*.sh 2>/d
 exec "$REPO_ROOT/scripts/run-cloud.sh"
 
 
-# 1. The Environment Setup (set -e and REPO_ROOT)
-# #!/usr/bin/env bash: Tells your Mac to use the Bash interpreter to run these instructions.
+# unset KUBECONFIG
+# kubectl port-forward -n vnf-demo svc/vnf-nginx-lb 9080:80
+# python3 scripts/monitoring/run_experiment.py --url http://127.0.0.1:9080 --duration 30 --out-dir results/cloud
 
-# set -e: This is a "safety first" command. It tells the script to stop immediately if any single command fails. This prevents the script from trying to deploy your VNF if the Minikube cluster failed to start.
 
-# REPO_ROOT="...": It automatically calculates where your project folder is located. This makes the script "portable," meaning it will work even if you move your folder to a different directory on your Mac.
+# export KUBECONFIG=${HOME}/.kube/edge-k3s.yaml
+# kubectl port-forward -n vnf-demo svc/vnf-nginx-lb 9080:80
+# python3 scripts/monitoring/run_experiment.py --url http://127.0.0.1:9080 --duration 30 --out-dir results/edge
 
-# 2. Permissions (chmod +x)
-# chmod +x scripts/...: This gives "Execute" permissions to all your sub-scripts. It ensures that your Mac is allowed to run the internal scripts that actually start Minikube and apply your YAML files.
-
-# 3. The Hand-off (exec ...)
-# exec "$REPO_ROOT/scripts/run-cloud.sh": This is the final step. It hands over control to the specific script that manages the Cloud-like setup.
+# ./scripts/stop-all.sh
